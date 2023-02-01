@@ -20,6 +20,16 @@ The service is built using [Go](https://golang.org/)
     MAILGUN_DOMAIN=your-mailgun-domain
     ```
 - Run `go run main.go`
+- The service will be running on port 5000
+- To send an email, make a POST request to `http://localhost:5000` with the following payload:
+    ```json
+  {
+  	"from": "EMAIL FROM",
+  	"to": "EMAIL TO",
+  	"subject": "Test subject",
+  	"body": "Test body"
+  }
+   ```
 
 ### Extending the service
 

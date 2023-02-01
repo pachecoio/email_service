@@ -1,34 +1,16 @@
 package main
 
 import (
-	"github.com/pachecoio/email_service/adapters/mailgun"
-	"github.com/pachecoio/email_service/domain"
-	"github.com/pachecoio/email_service/services"
-	"os"
+	"github.com/gorilla/mux"
+	_interface "github.com/pachecoio/email_service/interface"
+	"net/http"
 )
 
 func main() {
-
-	// Sending hardcoded email as an example:
-
-	err := LoadEnv()
+	r := mux.NewRouter()
+	r.HandleFunc("/", _interface.SendEmailHandler).Methods("POST")
+	err := http.ListenAndServe(":5000", r)
 	if err != nil {
 		panic(err)
-	}
-	domainValue := os.Getenv("MAILGUN_DOMAIN")
-	apiKeyValue := os.Getenv("MAILGUN_API_KEY")
-
-	//	Send mail with mailgun
-	c := mailgun.NewClient(domainValue, apiKeyValue)
-	payload := &domain.EmailPayload{
-		To:      "thiagodelimapacheco@gmail.com",
-		From:    "mailgun@" + domainValue,
-		Subject: "Test running app",
-		Body:    "Test app running fine",
-	}
-	res := services.SendEmail(c, payload)
-
-	if res.Failed {
-		panic(res.Message)
 	}
 }
