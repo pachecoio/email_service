@@ -6,3 +6,7 @@ type EmailPayload struct {
 	Subject string
 	Body    string
 }
+
+type EmailBatchPayload struct {
+	Emails []EmailPayload
+}

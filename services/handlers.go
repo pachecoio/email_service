@@ -6,6 +6,18 @@ import (
 )
 
 func SendEmail(
-	client adapters.AbstractEmailClient, payload *domain.EmailPayload) (domain.EmailSentEvent, error) {
+	client adapters.AbstractEmailClient, payload *domain.EmailPayload) error {
 	return client.Send(payload)
+}
+
+func SendBatch(
+	client adapters.AbstractEmailClient, payload *domain.EmailBatchPayload) domain.EmailBatchSentEvent {
+
+	for _, email := range payload.Emails {
+		err := SendEmail(client, &email)
+		if err != nil {
+			//..
+		}
+	}
+	return domain.EmailBatchSentEvent{}
 }

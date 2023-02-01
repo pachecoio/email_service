@@ -6,3 +6,7 @@ type EmailSentEvent struct {
 	Subject string
 	Body    string
 }
+
+type EmailBatchSentEvent struct {
+	emails []EmailSentEvent
+}

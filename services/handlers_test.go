@@ -61,10 +61,7 @@ func TestSendEmail(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			res, err := SendEmail(tt.args.client, tt.args.payload)
-			if res != tt.res {
-				t.Error("Expected ", tt.res, ", got ", res)
-			}
+			err := SendEmail(tt.args.client, tt.args.payload)
 			if (err == nil) != (tt.err == nil) {
 				t.Error("Expected ", tt.err, ", got ", err)
 			}
@@ -75,27 +72,15 @@ func TestSendEmail(t *testing.T) {
 // Valid email client mock
 type EmailClient struct{}
 
-func (client EmailClient) Send(payload *domain.EmailPayload) (domain.EmailSentEvent, error) {
-	return domain.EmailSentEvent{
-		From:    payload.From,
-		To:      payload.To,
-		Subject: payload.Subject,
-		Body:    payload.Body,
-	}, nil
+func (client EmailClient) Send(payload *domain.EmailPayload) error {
+	return nil
 }
 
 // Invalid email client mock
 type EmailClientThatFails struct{}
 
-func (client EmailClientThatFails) Send(payload *domain.EmailPayload) (domain.EmailSentEvent, error) {
-	res := domain.EmailSentEvent{
-		From:    payload.From,
-		To:      payload.To,
-		Subject: payload.Subject,
-		Body:    payload.Body,
-	}
-	err := domain.EmailSendError{
+func (client EmailClientThatFails) Send(payload *domain.EmailPayload) error {
+	return domain.EmailSendError{
 		Message: "Error sending email",
 	}
-	return res, err
 }

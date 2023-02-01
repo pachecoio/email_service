@@ -26,7 +26,7 @@ func main() {
 		Subject: "Test running app",
 		Body:    "Test app running fine",
 	}
-	_, err = services.SendEmail(c, payload)
+	err = services.SendEmail(c, payload)
 
 	if err != nil {
 		panic(err)

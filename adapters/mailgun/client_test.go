@@ -4,7 +4,6 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/pachecoio/email_service/domain"
 	"os"
-	"reflect"
 	"testing"
 )
 
@@ -43,16 +42,7 @@ func TestClient_SendFail_InvalidCredentials(t *testing.T) {
 		Subject: "Test",
 		Body:    "Test",
 	}
-	expected := domain.EmailSentEvent{
-		To:      "hi@pacheco.io",
-		From:    "hi@pacheco.io",
-		Subject: "Test",
-		Body:    "Test",
-	}
-	got, err := c.Send(payload)
-	if !reflect.DeepEqual(got, expected) {
-		t.Errorf("Send() got = %v, want %v", got, expected)
-	}
+	err := c.Send(payload)
 	if err == nil {
 		t.Errorf("Expected to fail")
 	}
@@ -77,16 +67,7 @@ func TestClient_SendSuccessWithEnvVariables(t *testing.T) {
 		Subject: "Test",
 		Body:    "Test",
 	}
-	expected := domain.EmailSentEvent{
-		To:      "thiagodelimapacheco@gmail.com",
-		From:    "mailgun@" + domainValue,
-		Subject: "Test",
-		Body:    "Test",
-	}
-	got, err := c.Send(payload)
-	if !reflect.DeepEqual(got, expected) {
-		t.Errorf("Send() got = %v, want %v", got, expected)
-	}
+	err = c.Send(payload)
 	if err != nil {
 		t.Errorf("Expected to succeed but received error: %v", err)
 	}

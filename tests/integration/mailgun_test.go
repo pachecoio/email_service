@@ -33,7 +33,7 @@ func TestSendHandler_Mailgun(t *testing.T) {
 		Body:    "Test integration working fine",
 	}
 
-	_, err = services.SendEmail(mailgunClient, payload)
+	err = services.SendEmail(mailgunClient, payload)
 
 	if err != nil {
 		t.Errorf("Failed to send email: %s", err.Error())
