@@ -9,7 +9,8 @@ import (
 
 func main() {
 
-	// Load env variables
+	// Sending hardcoded email as an example:
+
 	err := LoadEnv()
 	if err != nil {
 		panic(err)
