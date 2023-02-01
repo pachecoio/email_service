@@ -5,8 +5,10 @@ type EmailSentEvent struct {
 	To      string
 	Subject string
 	Body    string
+	Failed  bool
+	Message string
 }
 
 type EmailBatchSentEvent struct {
-	emails []EmailSentEvent
+	Emails []EmailSentEvent
 }
