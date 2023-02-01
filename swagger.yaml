@@ -1,0 +1,137 @@
+openapi: 3.0.0
+x-stoplight:
+  id: 1ujlb4t37imww
+info:
+  title: email_service-spec
+  version: '1.0'
+  description: Simple api exposing email service interface
+servers:
+  - url: 'http://localhost:5000'
+paths:
+  '/':
+    parameters: []
+    post:
+      summary: Send email
+      operationId: post
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailPayload'
+  /batch:
+    post:
+      summary: Send batch of emails
+      operationId: post-batch
+      responses:
+        '200':
+          description: emails sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailBatchResponse'
+      description: Send batch of emails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailBatchPayload'
+    parameters: []
+components:
+  schemas:
+    User:
+      title: User
+      type: object
+      description: ''
+      x-examples:
+        Alice Smith:
+          id: 142
+          firstName: Alice
+          lastName: Smith
+          email: alice.smith@gmail.com
+          dateOfBirth: '1997-10-31'
+          emailVerified: true
+          signUpDate: '2019-08-24'
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the given user.
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        dateOfBirth:
+          type: string
+          format: date
+          example: '1997-10-31'
+        emailVerified:
+          type: boolean
+          description: Set to true if the user's email has been verified.
+        createDate:
+          type: string
+          format: date
+          description: The date that the user was created.
+      required:
+        - id
+        - firstName
+        - lastName
+        - email
+        - emailVerified
+    EmailPayload:
+      title: EmailPayload
+      x-stoplight:
+        id: zw7jb1p9w8qzr
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+        subject:
+          type: string
+        body:
+          type: string
+    EmailBatchPayload:
+      title: EmailBatchPayload
+      x-stoplight:
+        id: pi58wds7ldikz
+      type: object
+      properties:
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailPayload'
+    EmailResponse:
+      title: EmailResponse
+      x-stoplight:
+        id: 8f68472eaa997
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+        subject:
+          type: string
+        body:
+          type: string
+        failed:
+          type: boolean
+        message:
+          type: string
+    EmailBatchResponse:
+      title: EmailBatchResponse
+      x-stoplight:
+        id: y7wheqg0if3qo
+      type: array
+      items:
+        $ref: '#/components/schemas/EmailResponse'

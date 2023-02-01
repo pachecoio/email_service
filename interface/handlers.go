@@ -33,8 +33,14 @@ func SendEmailHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, res.Message, http.StatusInternalServerError)
 	}
 
+	encoded, err := json.Marshal(res)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	w.Write(encoded)
 }
 
 func SendBatchEmailHandler(w http.ResponseWriter, r *http.Request) {
