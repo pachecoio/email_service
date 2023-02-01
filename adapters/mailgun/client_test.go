@@ -37,7 +37,7 @@ func TestNewMailgunClient(t *testing.T) {
 
 func TestClient_SendFail_InvalidCredentials(t *testing.T) {
 	c := NewClient("invalid-domain", "invalid-api-key")
-	payload := domain.EmailPayload{
+	payload := &domain.EmailPayload{
 		To:      "hi@pacheco.io",
 		From:    "hi@pacheco.io",
 		Subject: "Test",
@@ -71,7 +71,7 @@ func TestClient_SendSuccessWithEnvVariables(t *testing.T) {
 
 	c := NewClient(domainValue, apiKeyValue)
 
-	payload := domain.EmailPayload{
+	payload := &domain.EmailPayload{
 		To:      "thiagodelimapacheco@gmail.com",
 		From:    "mailgun@" + domainValue,
 		Subject: "Test",
