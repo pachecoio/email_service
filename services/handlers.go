@@ -6,8 +6,22 @@ import (
 )
 
 func SendEmail(
-	client adapters.AbstractEmailClient, payload *domain.EmailPayload) error {
-	return client.Send(payload)
+	client adapters.AbstractEmailClient, payload *domain.EmailPayload) domain.EmailSentEvent {
+	err := client.Send(payload)
+
+	res := domain.EmailSentEvent{
+		From:    payload.From,
+		To:      payload.To,
+		Subject: payload.Subject,
+		Body:    payload.Body,
+		Failed:  false,
+		Message: "",
+	}
+	if err != nil {
+		res.Failed = true
+		res.Message = err.Error()
+	}
+	return res
 }
 
 func SendBatch(
@@ -16,20 +30,7 @@ func SendBatch(
 	var emails []domain.EmailSentEvent
 
 	for _, email := range payload.Emails {
-		err := SendEmail(client, &email)
-
-		res := domain.EmailSentEvent{
-			From:    email.From,
-			To:      email.To,
-			Subject: email.Subject,
-			Body:    email.Body,
-			Failed:  false,
-			Message: "",
-		}
-		if err != nil {
-			res.Failed = true
-			res.Message = err.Error()
-		}
+		res := SendEmail(client, &email)
 		emails = append(emails, res)
 	}
 	return domain.EmailBatchSentEvent{

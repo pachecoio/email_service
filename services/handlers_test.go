@@ -13,9 +13,9 @@ func TestSendEmail(t *testing.T) {
 		payload *domain.EmailPayload
 	}
 	tests := []struct {
-		name string
-		args args
-		err  error
+		name   string
+		args   args
+		failed bool
 	}{
 		// Test cases
 		{
@@ -29,7 +29,7 @@ func TestSendEmail(t *testing.T) {
 					Body:    "<p>This is a test email</p>",
 				},
 			},
-			err: nil,
+			failed: false,
 		},
 		{
 			name: "Test SendEmail with invalid payload and client",
@@ -42,16 +42,14 @@ func TestSendEmail(t *testing.T) {
 					Body:    "<p>This is a test email</p>",
 				},
 			},
-			err: domain.EmailSendError{
-				Message: "Error sending email",
-			},
+			failed: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := SendEmail(tt.args.client, tt.args.payload)
-			if (err == nil) != (tt.err == nil) {
-				t.Error("Expected ", tt.err, ", got ", err)
+			res := SendEmail(tt.args.client, tt.args.payload)
+			if res.Failed != tt.failed {
+				t.Error("Expected ", tt.failed, ", got ", res.Failed)
 			}
 		})
 	}
