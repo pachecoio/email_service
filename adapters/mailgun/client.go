@@ -18,7 +18,7 @@ func NewClient(domain string, apiKey string) *Client {
 	}
 }
 
-func (c *Client) Send(payload domain.EmailPayload) (domain.EmailSentEvent, error) {
+func (c *Client) Send(payload *domain.EmailPayload) (domain.EmailSentEvent, error) {
 	message := c.mg.NewMessage(
 		payload.From,
 		payload.Subject,
