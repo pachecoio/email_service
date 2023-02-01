@@ -9,6 +9,7 @@ import (
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", _interface.SendEmailHandler).Methods("POST")
+	r.HandleFunc("/batch", _interface.SendBatchEmailHandler).Methods("POST")
 	err := http.ListenAndServe(":5000", r)
 	if err != nil {
 		panic(err)

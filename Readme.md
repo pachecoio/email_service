@@ -21,6 +21,8 @@ The service is built using [Go](https://golang.org/)
     ```
 - Run `go run main.go`
 - The service will be running on port 5000
+
+### Sending email
 - To send an email, make a POST request to `http://localhost:5000` with the following payload:
     ```json
   {
@@ -30,6 +32,21 @@ The service is built using [Go](https://golang.org/)
   	"body": "Test body"
   }
    ```
+  
+### Sending batch of emails
+- To send a batch of emails, make a POST request to `http://localhost:5000/batch` with the following payload:
+  ```json
+  {
+    "emails": [
+      {
+        "from": "EMAIL FROM",
+        "to": "EMAIL TO",
+        "subject": "Test subject",
+        "body": "Test body"
+      }
+    ]
+  }
+  ```
 
 ### Extending the service
 
